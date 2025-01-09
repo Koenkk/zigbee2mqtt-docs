@@ -56,6 +56,8 @@ This light supports the following features: `state`, `brightness`, `color_temp`,
   - `{"color": {"rgb": "R,G,B"}}` e.g. `{"color":{"rgb":"46,102,150"}}`
   - `{"color": {"hex": HEX}}` e.g. `{"color":{"hex":"#547CFF"}}`
 
+**Note:** The returnd values are always in XY color, a conversion function (in perl) is available to change those back into RGB space for personal verification if desired.
+
 #### On with timed off
 When setting the state to ON, it might be possible to specify an automatic shutoff after a certain amount of time. To do this add an additional property `on_time` to the payload which is the time in seconds the state should remain on.
 Additionally an `off_wait_time` property can be added to the payload to specify the cooldown time in seconds when the light will not answer to other on with timed off commands.
@@ -93,3 +95,36 @@ It's not possible to read (`/get`) or write (`/set`) this value.
 The minimal value is `0` and the maximum value is `255`.
 The unit of this value is `lqi`.
 
+### Conversion from returned XY to RGB
+To get proper color coversion back to RGB to verify the setting applied to be bulb the following function can be used:
+````perl
+sub
+xy2RGB($;$)
+{
+  my ($x,$y) = @_;
+  # Alternately, brightness may be used here. assuming 100% brightness.
+  my $br=1.0;
+  my $z=1.0-$x-$y;
+  # Convert X/Y into x/y/z
+  $z = ($br / $y)*$z;
+  $x= ($br / $y)*$x;
+  $y = $br;
+  # reverse matrix for sRGB space
+  my $r =  (($x * 1.656492) - ($y * 0.354851) - ($z * 0.255038));
+  my $g =  (($x * -0.707196) + ($y * 1.655397) + ($z * 0.036152));
+  my $b = (($x * 0.051713) - ($y * 0.121364) + ($z * 1.011530));
+  # balance as needed
+  if ($r>$b and $r>$g and $r >1.0) {
+    $g=$g/$r; $b=$b/$r; $r=1.0;
+  }elsif ($g>$b and $g >$r and $g >1.0) {
+    $r=$r/$g; $b=$b/$g; $g=1.0;
+  }elsif ($b>$r and $b >$g and $b >1.0) {
+    $r=$r/$b; $g=$g/$b; $b=1.0;
+  }
+  # Convert, rounding up.
+  $r =  int(255.5 * (($r <= 0.0031308) ? (12.92 * $r) : (1.055 * pow($r, (1.0/ 2.4)) - 0.055)));
+  $g =  int(255.5 * (($g <= 0.0031308) ? (12.92 * $g) : (1.055 * pow($g, (1.0/ 2.4)) - 0.055)));
+  $b =  int(255.5 * (($b <= 0.0031308) ? (12.92 * $b) : (1.055 * pow($b, (1.0/ 2.4)) - 0.055)));
+  return uc(sprintf("%02x%02x%02x",$r,$g,$b));
+}
+````
