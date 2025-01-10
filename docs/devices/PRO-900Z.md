@@ -18,7 +18,7 @@ pageClass: device-page
 | Model | PRO-900Z  |
 | Vendor  | [ElectSmart](/supported-devices/#v=ElectSmart)  |
 | Description | Thermostat for electric floor |
-| Exposes | child_lock, eco_mode, eco_temperature, valve_state, climate (system_mode, preset, current_heating_setpoint, local_temperature, local_temperature_calibration), deadzone_temperature, min_temperature, max_temperature, min_temperature_limit, max_temperature_limit, sensor, external_temperature_input, brightness, display_brightness, schedule_monday, schedule_tuesday, schedule_wednesday, schedule_thursday, schedule_friday, schedule_saturday, schedule_sunday, factory_reset, linkquality |
+| Exposes | child_lock, eco_mode, eco_temperature, climate (system_mode, running_state, preset, current_heating_setpoint, local_temperature, local_temperature_calibration), deadzone_temperature, min_temperature, max_temperature, min_temperature_limit, max_temperature_limit, sensor, external_temperature_input, brightness, display_brightness, schedule_monday, schedule_tuesday, schedule_wednesday, schedule_thursday, schedule_friday, schedule_saturday, schedule_sunday, factory_reset, linkquality |
 | Picture | ![ElectSmart PRO-900Z](https://www.zigbee2mqtt.io/images/devices/PRO-900Z.png) |
 
 
