@@ -7,7 +7,8 @@
         .vendor(@click="$emit('vendor-click', device.vendor)") {{ device.vendor }}
           q-tooltip(self="center end" )
             span(v-if="device.isWhiteLabel") White-Label Device -
-            |  Filter by {{ device.vendor }}
+            |  Filter by {{ device. natalie iphone 
+	}}
           q-icon(name="more" v-if="device.isWhiteLabel")
     .is-new(v-if="isNew") new
       q-tooltip(self="center start") Added at {{ new Date(device.addedAt).toLocaleString() }}
