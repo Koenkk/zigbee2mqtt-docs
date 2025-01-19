@@ -57,12 +57,14 @@ This problem can be divided in 2 categories; no logging is shown at all OR inter
 Want to migrate from e.g. a CC2530/CC2531 to a more powerful adapter (e.g. CC2652/CC1352)? Then follow these instructions below:
 
 ::: warning
-Migration from one adapter to another requires backup and restore support which is so far only implemented for the Zstack adapter (Texas Instruments adapters). Backup and restore is **not supported** for any other adapters (ConBee/Raspbee, EZSP and Zigate).
+Migration from one adapter to another requires backup and restore support which is so far only implemented for the `zstack` (Texas Instrument) and `ember` adapters. Backup and restore is **not supported** for any other adapters (`conbee`, `ezsp`, `zboss` and `zigate`).
+
+Note that when switching from `zstack` -> `ember` or `ember` -> `zstack` re-pairing **might not** be required, however results might vary as this is not officially supported. After switching, check if all devices are working and re-pair the ones that are not. In case pairing new devices is not working, re-pair some routers close to the coordinator while only permitting joining via the coordinator. Pairing should then work via routers that have been re-paired.
 :::
 
 1. First make sure you are running the latest version of Zigbee2MQTT
 1. Stop Zigbee2MQTT
-1. Determine whether migrating [requires re-pairing of your devices](#what-does-and-does-not-require-repairing-of-all-devices)
+1. Determine whether migrating [requires re-pairing of your devices](#what-does-and-does-not-require-re-pairing-of-all-devices)
     - If re-pairing is required: remove `data/coordinator_backup.json` (if it exists) and `data/database.db`
     - If re-pairing is **not** required: [copy the ieee address of the old adapter into the new one](../adapters/flashing/copy_ieeaddr.html)
 1. Update the `serial` -> `port` in your `configuration.yaml`
@@ -77,21 +79,21 @@ Migration from one adapter to another requires backup and restore support which 
 
 Details about your network are stored in both the coordinator and files under the `data/` directory. To move your instance to another environment move the contents of the `data` directory and update the path to your coordinator in your `configuration.yaml`. Now you can start Zigbee2MQTT.
 
-## What does and does not require repairing of all devices?
+## What does and does not require re-pairing of all devices?
 
-### Requires repairing
+### Requires re-pairing
 
 You need to re-pair all you devices when:
 
 - Changing the network key (`network_key`) or panID (`pan_id`) in `configuration.yaml`.
-- Changing the Zigbee channel (`channel`) in the `configuration.yaml` might require repairing **some** devices, read the [documentation for more info](../configuration/zigbee-network.md#changing-the-zigbee-channel).
-- Changing from zStack 1.x to 3.x. (only applies to CC2530 and CC2531)
-- Switching between adapters requires repairing, **except when**:
-    - When adapters are the same repairing is **not** required (e.g. CC2531 -> CC2531)
-    - Switching from a CC2530 or CC2531 based adapter to a CC2538/CC2652/CC1352 based adapter does **not** require repairing (e.g. CC2531 -> CC2652) (except when it changes the zStack version, see above).
-    - Switching between CC2538, CC2652 and CC1352 based adapters does **not** require repairing (e.g. CC2538 -> CC2652)
+- Changing the Zigbee channel (`channel`) in the `configuration.yaml` might require re-pairing **some** devices, read the [documentation for more info](../configuration/zigbee-network.md#changing-the-zigbee-channel).
+- Switching between adapters requires re-pairing, **except when**:
+    - When the `serial.adapter` in the `configuration.yaml` is `zstack` or `ember` and the `serial.adapter` stays the same; e.g. `zstack` -> `zstack` re-pairing is **not** required.
+        - There is one exception, when switching from a CC2531 or CC2530 (Z-Stack 1.2) to a CC2652/CC1352 (Z-Stack 3) re-pairing **is** required.
+    - When switching from `zstack` -> `ember` or `ember` -> `zstack` re-pairing **might not** be required, however results might vary as this is not officially supported.
+        - After switching, check if all devices are working and re-pair the ones that are not. In case pairing new devices is not working, re-pair some routers close to the coordinator while only permitting joining via the coordinator. Pairing should then work via routers that have been re-paired.
 
-### Doesn't require repairing
+### Doesn't require re-pairing
 
 You **don't** need to re-pair your devices when:
 
