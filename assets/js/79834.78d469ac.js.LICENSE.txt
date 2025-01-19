@@ -1,0 +1,30 @@
+/*!
+  * vue-router v4.5.0
+  * (c) 2024 Eduardo San Martin Morote
+  * @license MIT
+  */
+
+/*! #__NO_SIDE_EFFECTS__ */
+
+/**
+ * NProgress, (c) 2013, 2014 Rico Sta. Cruz - http://ricostacruz.com/nprogress
+ * @license MIT
+ */
+
+/**
+* @vue/reactivity v3.5.13
+* (c) 2018-present Yuxi (Evan) You and Vue contributors
+* @license MIT
+**/
+
+/**
+* @vue/runtime-dom v3.5.13
+* (c) 2018-present Yuxi (Evan) You and Vue contributors
+* @license MIT
+**/
+
+/**
+* @vue/shared v3.5.13
+* (c) 2018-present Yuxi (Evan) You and Vue contributors
+* @license MIT
+**/

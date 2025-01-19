@@ -1,0 +1,1 @@
+/*! @docsearch/js 3.8.2 | MIT License | © Algolia, Inc. and contributors | https://docsearch.algolia.com */
