@@ -30,7 +30,7 @@ To pair the device you first need to have it powered, attached to the valve and 
 
 If the device is showing `FS` or `RD` press the button on the top of the unit and it should now show `,,7`
 
-Once this stops flashing hold the top button for about 5 seconds at which point the unit should now show the temperature.
+Once this stops flashing hold the top button for about 5 seconds at which point the unit should now show the temperature. (If the temperature does not show, the valve calibration might have failed. this can happen if you did not mount it properly. Then you need to remount the thermostat and start with the previous step.)
 
 Keep turning the dial counter-clockwise unil the display shows `OF` and finally hold down the top button for 3 seconds.
 
