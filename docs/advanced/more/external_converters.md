@@ -4,11 +4,17 @@ sidebar: auto
 
 # External converters
 
+:::tip WARNING V1.x > V2.x
+Breaking change:
+External converters and extensions
+    The external_converters setting is no longer used. Instead all external converters inside /external_converters directory are now automatically loaded. Make sure to move all your external converters to this directory. And remove the external_converters in your configuration file.
+:::
+
 Zigbee2MQTT uses [zigbee-herdsman-converters](https://github.com/Koenkk/zigbee-herdsman-converters) to parse messages to and from devices.
 
 External converters provide a way to test support for new devices, they work identically to internal converters.
 
-External converters are stored in `data/external_converters` folder and have to export a JavaScript Object or Array of Object matching the type [`DefinitionWithExtend`](https://github.com/Koenkk/zigbee-herdsman-converters/blob/master/src/lib/types.ts). Refer to [existing converters](https://github.com/Koenkk/zigbee-herdsman-converters/tree/master/src/devices) to get familiar with the framework.
+External converters are stored in `(zigbee2mqtt)/external_converters/<your-converter-name>.js` folder and have to export a JavaScript Object or Array of Object matching the type [`DefinitionWithExtend`](https://github.com/Koenkk/zigbee-herdsman-converters/blob/master/src/lib/types.ts). Refer to [existing converters](https://github.com/Koenkk/zigbee-herdsman-converters/tree/master/src/devices) to get familiar with the framework.
 
 :::tip TIP
 Once your converter is ready, open a [pull request](https://github.com/Koenkk/zigbee-herdsman-converters/pulls) so it can be integrated into Zigbee2MQTT for all to use. Once the new Zigbee2MQTT version is released, you can just delete the external converter.
@@ -16,7 +22,7 @@ Once your converter is ready, open a [pull request](https://github.com/Koenkk/zi
 
 Example:
 
-File: `data/external_converters/my-first-converter.js`
+File: `(zigbee2mqtt)/external_converters/my-first-converter.js`
 
 ```js
 const {temperature, humidity, battery} = require('zigbee-herdsman-converters/lib/modernExtend');
@@ -72,3 +78,10 @@ To save a converter at runtime, send a message to `zigbee2mqtt/bridge/request/co
 ## Remove converter
 
 To remove a converter at runtime, send a message to `zigbee2mqtt/bridge/request/converter/remove` with payload `{"name": "my-first-converter.js"}`. The file will be deleted from `data/external_converters/`.
+
+:::tip Wan't to check if your freshly made converter loaded correctly? 
+After restart your device should change from unsupported to supported. 
+If you want to have a closer look if the converter is recognized and loaded. 
+Press "Restart" on the addon and look into the logs. 
+Here you should find: `[DATE TIME] info: 	z2m: Loaded external converter 'your-converter-name.js'`.
+:::
