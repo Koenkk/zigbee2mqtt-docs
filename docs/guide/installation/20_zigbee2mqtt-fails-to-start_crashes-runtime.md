@@ -223,6 +223,43 @@ This happens when you edit one or more of the `pan_id`, `network_key` or `ext_pa
 ext_pan_id: [0x39,0xaf,0x4d,0x83,0xh2,0xdc,0xb3,0x89]
 ```
 
+## Zigbee adapters over the network: use robust and reliable network adapters on Zigbee2MQTT server
+
+If you have a WiFi or ethernet-connected Zigbee adapter, Zigbee2MQTT is communicating with the Zigbee adapter over the LAN through serial-over-IP protocol.
+
+The use of USB-WiFi or USB-ethernet adapters on the Zigbee2MQTT server is discouraged because despite the apparent equivalence to the onboard adapters in terms of specifications, they are designed in small enclosures, often not well ventilated and tend to overheat.  
+These adapters are known to stall or stop working in case of high loads or overheating, causing errors like:
+
+```
+[2024-06-24 03:37:22] error: zh:ember:uart:ash: Received ERROR from NCP while connecting, with code=ERROR_EXCEEDED_MAXIMUM_ACK_TIMEOUT_COUNT.
+[2024-06-24 03:37:22] error: zh:ember:uart:ash: ASH disconnected | NCP status: ASH_NCP_FATAL_ERROR
+[2024-06-24 03:37:22] error: zh:ember:uart:ash: Error while parsing received frame, status=ASH_NCP_FATAL_ERROR.
+```
+
+where a timeout occurred on the serial-over-IP protocol, or:
+
+```
+[2024-06-24 03:37:24] warning: zh:ember:uart:ash: Frame(s) in progress cancelled in [1ac1020b0a527e]
+[2024-06-24 03:37:24] error: zh:ember:uart:ash: Received unexpected reset from NCP, with reason=RESET_SOFTWARE.
+[2024-06-24 03:37:24] error: zh:ember:uart:ash: ASH disconnected: ASH_ERROR_NCP_RESET | NCP status: ASH_NCP_FATAL_ERROR
+[2024-06-24 03:37:24] error: zh:ember:uart:ash: Error while parsing received frame, status=HOST_FATAL_ERROR.
+[2024-06-24 03:37:24] error: zh:ember: !!! NCP FATAL ERROR reason=HOST_FATAL_ERROR. ATTEMPTING RESET... !!!
+```
+
+which shows a communication out of sync between host and NCP but also, and this is a clear hint of network problems:
+
+```
+[2024-06-24 03:38:05] error: z2m:mqtt: Not connected to MQTT server!
+[2024-06-24 03:38:05] error: z2m:mqtt: Cannot send message: topic: 'zigbee2mqtt/bridge/state', payload: '{"state":"offline"}
+[2024-06-24 03:38:05] info: z2m:mqtt: Disconnecting from MQTT server
+```
+
+where Zigbee2MQTT could not connect to the MQTT server over the LAN.
+
+The best setup for this situation is to use the ethernet port embedded into the Zigbee2MQTT server motherboard which guarantees reliability of communications in all load conditions.  
+As a second choice you can use the onboard WiFi adapter which should as well be designed for reliability, but also consider the stability of your WiFi network.  
+If all the onboard adapters are in use and you need to add another network adapter, the best choice is to install an internal network card on the PCIe bus, with proper cooling design.
+
 ## Error: regular crashes with timeout errors or failure to start after the serial port is opened
 
 These errors may occur when the serial communication between the ZigBee dongle and Zigbee2MQTT unexpectedly stops working.

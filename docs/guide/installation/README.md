@@ -20,4 +20,4 @@ Zigbee2MQTT was written in Node.js and runs almost on every platform with afford
 
 ## Troubleshooting
 
-- [Zigbee2MQTT fails to start/crashes runtime](./20_zigbee2mqtt-fails-to-start_crashes-runtime.md).
+- [Zigbee2MQTT fails to start/crashes runtime](./20_zigbee2mqtt-fails-to-start_crashes-runtime.md)
